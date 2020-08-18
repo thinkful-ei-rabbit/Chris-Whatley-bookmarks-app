@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chris's Bookmark App</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Bookmarks</h1>
+        <form class="hidden" id="bookmarks-form">
+           <label for="new-bookmark-entry">Add New Bookmark</label>
+           <input type="text" class="new-bookmark" id= 'bookmark-url'placeholder="Enter bookmark URL" required>
+           <input type="text" class="new-bookmark" id= 'bookmark-name'placeholder="Enter bookmark Name" required> 
+           <fieldset>
+            <span class="star-cb-group">
+              <input type="radio" id="rating-5" name="rating" value="5" />
+              <label for="rating-5">5</label>
+              <input type="radio" id="rating-4" name="rating" value="4" checked="checked" />
+              <label for="rating-4">4</label>
+              <input type="radio" id="rating-3" name="rating" value="3" />
+              <label for="rating-3">3</label>
+              <input type="radio" id="rating-2" name="rating" value="2" />
+              <label for="rating-2">2</label>
+              <input type="radio" id="rating-1" name="rating" value="1" />
+              <label for="rating-1">1</label>
+              <input type="radio" id="rating-0" name="rating" value="0" class="star-cb-clear" />
+              <label for="rating-0">0</label>
+            </span>
+          </fieldset>
+          <textarea name="new-bookmark-entry" id="bookmark-description" placeholder="Enter description of bookmark(optional)" cols="30" rows="10"></textarea>
+          <button>Cancel</button><button type="submit">Create Bookmark</button>
+        </form>
+    </div>
+</body>
+</html>
