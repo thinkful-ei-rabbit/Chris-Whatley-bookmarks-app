@@ -3,20 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="index.css"> -->
     <title>Chris's Bookmark App</title>
 </head>
 <body>
     <div class="container">
-        <h1>Bookmarks</h1>
-        <form class="hidden" id="bookmarks-form">
-           <label for="new-bookmark-entry">Add New Bookmark</label>
-           <input type="text" class="new-bookmark" id= 'bookmark-url'placeholder="Enter bookmark URL" required>
+        <h1>My Bookmarks</h1>
+        <button class="new-bookmark-button">New Bookmark</button>
+
+        <select name="FilterBy" id='filter'>
+          <option value="0">Filter by Rating</option>
+          <option value="5">5-star</option>
+          <option value="4">4-star</option>
+          <option value="3">3-star</option>
+          <option value="2">2-star</option>
+          <option value="1">1-star</option>
+        </select>
+        <form class="hidden" id="bookmark-form">
+           <div class="error-container">Some text</div>
+           <label for="new-bookmark-entry">Add New Bookmark</label><br>
+           <input type="text" class="new-bookmark" id= 'bookmark-url'placeholder="Enter bookmark URL" required><br>
            <input type="text" class="new-bookmark" id= 'bookmark-name'placeholder="Enter bookmark Name" required> 
-           <fieldset>
+           <fieldset required>
             <span class="star-cb-group">
               <input type="radio" id="rating-5" name="rating" value="5" />
               <label for="rating-5">5</label>
-              <input type="radio" id="rating-4" name="rating" value="4" checked="checked" />
+              <input type="radio" id="rating-4" name="rating" value="4" />
               <label for="rating-4">4</label>
               <input type="radio" id="rating-3" name="rating" value="3" />
               <label for="rating-3">3</label>
@@ -28,9 +40,23 @@
               <label for="rating-0">0</label>
             </span>
           </fieldset>
-          <textarea name="new-bookmark-entry" id="bookmark-description" placeholder="Enter description of bookmark(optional)" cols="30" rows="10"></textarea>
-          <button>Cancel</button><button type="submit">Create Bookmark</button>
+          <textarea name="new-bookmark-entry" id="bookmark-description" placeholder="Enter description of bookmark(optional)" cols="30" rows="10"></textarea><br>
+          <button class="new-bookmark-cancel" type="reset">Cancel</button><button type="submit">Create Bookmark</button>
         </form>
+        
+        <ul class="bookmark-list">
+          <li class="bookmark">
+            <div class="bookmark-title">title </div><div class="bookmark-rating"> rating</div>
+          </li>
+          <li class="bookmark">
+            <div class="bookmark-title">title2 </div><div class="bookmark-rating"> rating2</div>
+            <div class="expanded hidden">
+            <button class="delete">Delete Bookmark</button>
+            <p class="bookmark-description">description</p>
+            <a href="#"><button class="visit site"> Visit Site</button></a>
+            </div>
+          </li>
+        </ul>
     </div>
 </body>
 </html>

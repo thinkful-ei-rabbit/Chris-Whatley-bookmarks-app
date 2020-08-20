@@ -20,15 +20,29 @@
     display: none;
   }
   
-  #bookmark-list-item {
+  .bookmark {
+    display: flex;
     width: 250px;
+    flex-wrap: wrap;
+  }
+
+  .bookmark-list{
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .bookmark-list > li{
+    /* margin-bottom: 20px; */
+    border: 1px solid grey;
+    padding: 10px; 
   }
   
   .container {
-    max-width: 600px;
+    max-width: 251px;
     margin: 0 auto;
+    border: 1px solid grey;
   }
-  
+
   .star-cb-group {
     /* remove inline-block whitespace */
     font-size: 0;
