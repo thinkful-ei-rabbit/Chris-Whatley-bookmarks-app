@@ -6,24 +6,57 @@ function generateBookmarkElement(bookmark) {
     if(bookmark.expanded ===true){
         return `
         <li class="bookmark" data-bookmark-id="${bookmark.id}">
+        <div class="list-control"> 
             <div class="bookmark-title">${bookmark.title}</div><div class="bookmark-rating"> ${bookmark.rating}</div>
+        </div>
             <div class="expanded">
-            <button class="delete">Delete Bookmark</button>
-            <p class="bookmark-description">${bookmark.desc}</p>
-            <a href="${bookmark.url}"><button class="visit site"> Visit Site</button></a>
+                <p class="bookmark-description">${bookmark.desc}</p>
+                <div class="list-control">
+                    <a href="${bookmark.url}" target="_blank" class='button'>Visit Site</a><button class="delete">Delete</button>
+                </div>
             </div>
         </li>`;
-    } else {
+    } 
+    else {
         return `
         <li class="bookmark" data-bookmark-id="${bookmark.id}">
-            <div class="bookmark-title">${bookmark.title}</div><div class="bookmark-rating"> ${bookmark.rating}</div>
-            <div class="expanded hidden">
-            <button class="delete">Delete Bookmark</button>
-            <p class="bookmark-description">${bookmark.desc}</p>
-            <a href="${bookmark.url}"><button class="visit site"> Visit Site</button></a>
+            <div class="list-control"> 
+                <div class="bookmark-title">${bookmark.title}</div><div class="bookmark-rating"> ${bookmark.rating}</div>
             </div>
         </li>`;
     }
+}
+
+function generateNewBookmarkForm(){
+    return `
+        <form id="bookmark-form">
+           <div class="error-container"></div>
+           <label for="new-bookmark-entry">Add New Bookmark</label><br>
+           <input type="text" class="new-bookmark" id= 'bookmark-url'placeholder="Enter bookmark URL" required><br>
+           <input type="text" class="new-bookmark" id= 'bookmark-name'placeholder="Enter bookmark Name" required> 
+           <fieldset required>
+            <span class="star-cb-group">
+              <input type="radio" id="rating-5" name="rating" value="5" />
+              <label for="rating-5">5</label>
+              <input type="radio" id="rating-4" name="rating" value="4" />
+              <label for="rating-4">4</label>
+              <input type="radio" id="rating-3" name="rating" value="3" />
+              <label for="rating-3">3</label>
+              <input type="radio" id="rating-2" name="rating" value="2" />
+              <label for="rating-2">2</label>
+              <input type="radio" id="rating-1" name="rating" value="1" />
+              <label for="rating-1">1</label>
+              <input type="radio" id="rating-0" name="rating" value="0" class="star-cb-clear" />
+              <label for="rating-0">0</label>
+            </span>
+          </fieldset>
+          <textarea name="new-bookmark-entry" id="bookmark-description" placeholder="Enter description of bookmark(optional)" cols="30" rows="10"></textarea><br>
+          <div class="list-control">
+            <button class="new-bookmark-cancel" type="reset">Cancel</button><button type="submit">Create Bookmark</button>
+          </div>
+        </form>
+    </div>
+    `;
 }
 
 function generateBookmarksString(bookmarksList) {
@@ -52,38 +85,34 @@ function renderError() {
 function render() {
     renderError();
     console.log('Store at render:',store)
-    // Reveals input form if store.adding === true
-    let bookmarksList = [...store.bookmarks];
-    if (store.filter>0){
-        bookmarksList = bookmarksList.filter(bookmark => bookmark.rating >= store.filter)
+    
+    if (store.adding){
+        $('.container-form,.bookmark-list').empty();
+        let form= generateNewBookmarkForm()
+        $('.container-form').html(form)
     }
-    if (store.adding) {
-        console.log('adding equals true?', store.adding)
-        // $('.bookmark-list, #bookmark-form').toggleClass('hidden')
-        // $('#bookmark-form').toggleClass('hidden')
-    } 
-    else {
+    else{
+        let bookmarksList = [...store.bookmarks];
+        if (store.filter>0){
+            bookmarksList = bookmarksList.filter(bookmark => bookmark.rating >= store.filter)
+        }
+        $('.container-form,.bookmark-list').empty();
         // render the bookmark list in the DOM
-        console.log('adding equals false?', store.adding)
         const bookmarksString = generateBookmarksString(bookmarksList);
-        // $('.bookmark-list, #bookmark-form').toggleClass('hidden')
-        // $('.bookmark-list').toggleClass('hidden')
-        
+
         // insert that HTML into the DOM
         $('.bookmark-list').html(bookmarksString);
     }
-    // $('.bookmark-list, #bookmark-form').toggleClass('hidden')
     console.log('rendered')
 };
 
 function handleNewBookmarkClick() {
     $('.new-bookmark-button').click(() => {
-        console.log(store.adding)
+        console.log('false?',store.adding)
         if (store.adding === false) {
             store.toggleNewBookmarkForm();
-            console.log(store.adding)
+            console.log('true?',store.adding)
             render();
-            $('.bookmark-list, #bookmark-form').toggleClass('hidden')
         } else{
             alert('Only one bookmark can be added at a time.')
         }
@@ -91,17 +120,16 @@ function handleNewBookmarkClick() {
 }
 
 function handleCancelNewBookmarkClick() {
-    $('.new-bookmark-cancel').click(() =>{
+    $('.container-form').on('click','.new-bookmark-cancel',() =>{
         console.log('cancel clicked')
         store.toggleNewBookmarkForm();
-        console.log(store.adding)
-        $('.bookmark-list, #bookmark-form').toggleClass('hidden')
+        console.log('false?',store.adding)
         render();
     })
 }
 
 function handleNewBookmarkSubmit() {
-    $('#bookmark-form').submit((e)=> {
+    $('.container-form').on('submit','#bookmark-form',(e)=> {
         e.preventDefault();
         console.log('form submitted')
         const newBookmark = {
@@ -119,13 +147,12 @@ function handleNewBookmarkSubmit() {
                     store.toggleNewBookmarkForm();    
                 }
                 console.log('adding equals false?', store.adding)
-                $('.bookmark-list, #bookmark-form').toggleClass('hidden')
                 render();
                 $('#bookmark-form').trigger('reset')
             })
             .catch((error) => {
                 store.setError(error.message);
-                renderError();
+                render();
             });
     });
 };
@@ -133,7 +160,7 @@ function handleNewBookmarkSubmit() {
 function handleCloseError() {
     $('.error-container').on('click', '#cancel-error', () => {
       store.setError(null);
-      renderError();
+      render();
     });
 };
 
@@ -143,7 +170,7 @@ function getBookmarkIdFromElement(bookmark) {
 
 function handleBookmarkListItemClicked(){
     $('.bookmark-list').on('click', '.bookmark', e =>{
-        e.preventDefault()
+        //e.preventDefault()
         let id = getBookmarkIdFromElement(e.currentTarget)
         let bookmark = store.findById(id)
         console.log('bookmark id:', id)
@@ -167,7 +194,7 @@ function handleDeleteBookmarkClicked(){
             .catch((error) => {
                 console.log(error);
                 store.setError(error.message);
-                renderError();
+                render();
             });
     });
 }
