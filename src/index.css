@@ -12,7 +12,7 @@ a {
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Times New Roman', Times, serif;
   margin: 0 0 0 0;
   background-color: #13294B;
 }
@@ -28,7 +28,7 @@ label.bookmark-label{
 }
 
 select {
-  width: 115px;
+  width: 120px;
   height: 30px;
   margin: 5px;
   background: #4E9CAF;
@@ -51,6 +51,11 @@ textarea{
 button:hover {
   cursor: pointer;
 }
+.button-align {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .list-control {
   display: flex;
   justify-content: space-between;
@@ -69,10 +74,9 @@ button:hover {
 }
 
 .bookmark-list {
-  font-family: 'Times New Roman', Times, serif;
   list-style: none;
   padding-left: 0;
-  width: 250px;
+  width: 100%;
   margin: 0 auto;
   background-color: white;
 }
@@ -83,7 +87,7 @@ button:hover {
 }
 
 .container, .container-form {
-  width: 251px;
+  width: 100%;
   margin: 0 auto;
   border: 1px solid grey;
 }
@@ -172,4 +176,29 @@ button, .button {
 .icon {
   color: #e52;
   text-shadow: 0 0 1px #333;
+}
+
+@media all and (min-width: 475px){
+  .container, .container-form {
+    width: 350px;
+    
+  }
+}
+
+@media all and (min-width: 750px){
+  .container, .container-form {
+    width: 650px;
+  }
+}
+
+@media all and (min-width: 1000px){
+  .container, .container-form {
+    width: 850px;
+  }
+}
+
+@media all and (min-width: 1250px){
+  .container, .container-form {
+    width: 1000px;
+  }
 }

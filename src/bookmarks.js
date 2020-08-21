@@ -11,8 +11,9 @@ function generateBookmarkElement(bookmark) {
             <div class="bookmark-title">${bookmark.title}</div><div class="bookmark-rating"> ${rating}</div>
         </div>
             <div class="expanded">
+                <div>Description:</div>
                 <p class="bookmark-description">${bookmark.desc}</p>
-                <div class="list-control">
+                <div class="button-align">
                     <a href="${bookmark.url}" target="_blank" class='button'>Visit Site</a><button class="delete">Delete</button>
                 </div>
             </div>
@@ -50,7 +51,7 @@ function generateNewBookmarkForm(){
             </span>
           </fieldset>
           <textarea name="new-bookmark-entry" id="bookmark-description" placeholder="Enter description of bookmark(optional)" cols="30" rows="10"></textarea><br>
-          <div class="list-control">
+          <div class="button-align">
             <button class="new-bookmark-cancel" type="reset">Cancel</button><button type="submit">Add Bookmark</button>
           </div>
         </form>
@@ -175,7 +176,7 @@ function getBookmarkIdFromElement(bookmark) {
 };
 
 function handleBookmarkListItemClicked(){
-    $('.bookmark-list').on('click', '.bookmark', e =>{
+    $('.bookmark-list').on('click', '.list-control', e =>{
         //e.preventDefault()
         let id = getBookmarkIdFromElement(e.currentTarget)
         let bookmark = store.findById(id)
