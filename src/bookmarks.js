@@ -3,11 +3,12 @@ import store from './store';
 import api from './api';
 
 function generateBookmarkElement(bookmark) {
+    let rating = generateStarRating(bookmark.rating)
     if(bookmark.expanded ===true){
         return `
         <li class="bookmark" data-bookmark-id="${bookmark.id}">
         <div class="list-control"> 
-            <div class="bookmark-title">${bookmark.title}</div><div class="bookmark-rating"> ${bookmark.rating}</div>
+            <div class="bookmark-title">${bookmark.title}</div><div class="bookmark-rating"> ${rating}</div>
         </div>
             <div class="expanded">
                 <p class="bookmark-description">${bookmark.desc}</p>
@@ -21,7 +22,7 @@ function generateBookmarkElement(bookmark) {
         return `
         <li class="bookmark" data-bookmark-id="${bookmark.id}">
             <div class="list-control"> 
-                <div class="bookmark-title">${bookmark.title}</div><div class="bookmark-rating"> ${bookmark.rating}</div>
+                <div class="bookmark-title">${bookmark.title}</div><div class="bookmark-rating"> ${rating}</div>
             </div>
         </li>`;
     }
@@ -31,10 +32,10 @@ function generateNewBookmarkForm(){
     return `
         <form id="bookmark-form">
            <div class="error-container"></div>
-           <label for="new-bookmark-entry">Add New Bookmark</label><br>
+           <label class='bookmark-label'for="new-bookmark-entry">Add New Bookmark</label><br>
            <input type="text" class="new-bookmark" id= 'bookmark-url'placeholder="Enter bookmark URL" required><br>
            <input type="text" class="new-bookmark" id= 'bookmark-name'placeholder="Enter bookmark Name" required> 
-           <fieldset required>
+           <fieldset>
             <span class="star-cb-group">
               <input type="radio" id="rating-5" name="rating" value="5" />
               <label for="rating-5">5</label>
@@ -44,15 +45,13 @@ function generateNewBookmarkForm(){
               <label for="rating-3">3</label>
               <input type="radio" id="rating-2" name="rating" value="2" />
               <label for="rating-2">2</label>
-              <input type="radio" id="rating-1" name="rating" value="1" />
+              <input type="radio" id="rating-1" name="rating" value="1" required/>
               <label for="rating-1">1</label>
-              <input type="radio" id="rating-0" name="rating" value="0" class="star-cb-clear" />
-              <label for="rating-0">0</label>
             </span>
           </fieldset>
           <textarea name="new-bookmark-entry" id="bookmark-description" placeholder="Enter description of bookmark(optional)" cols="30" rows="10"></textarea><br>
           <div class="list-control">
-            <button class="new-bookmark-cancel" type="reset">Cancel</button><button type="submit">Create Bookmark</button>
+            <button class="new-bookmark-cancel" type="reset">Cancel</button><button type="submit">Add Bookmark</button>
           </div>
         </form>
     </div>
@@ -63,6 +62,14 @@ function generateBookmarksString(bookmarksList) {
     const bookmarks = bookmarksList.map((bookmark) => generateBookmarkElement(bookmark));
     return bookmarks.join('');
 };
+
+function generateStarRating(number){
+    let stars = '';
+    for(let i = 0; i < number; i++) {
+      stars += '★';
+    };
+    return `<span class="icon colored-stars">${stars}</span>`;
+  };
 
 const generateError = function (message) {
     return `
@@ -113,9 +120,7 @@ function handleNewBookmarkClick() {
             store.toggleNewBookmarkForm();
             console.log('true?',store.adding)
             render();
-        } else{
-            alert('Only one bookmark can be added at a time.')
-        }
+        } 
     })
 }
 
@@ -138,6 +143,7 @@ function handleNewBookmarkSubmit() {
             desc: $('#bookmark-description').val(),
             rating: parseInt($('input[name="rating"]:checked').val())
         }
+        
         console.log('new bookmark object:',newBookmark)
         api.createBookmark(newBookmark)
             .then((bookmark) => {

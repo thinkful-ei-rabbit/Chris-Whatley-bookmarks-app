@@ -17,7 +17,7 @@ function main(){
         console.log('Store at load', store)
         });
     bookmarkList.bindEventListeners();
-    bookmarkList.render();
+    // bookmarkList.render();
 }
 
 $(main)

@@ -4,19 +4,48 @@
 
 h1{
   text-align: center;
+  color: #4E9CAF;
 }
 
 a {
   text-decoration: none;
 }
+
 body {
   font-family: 'Roboto', sans-serif;
-  width: 85%;
-  margin: 0 auto;
+  margin: 0 0 0 0;
+  background-color: #13294B;
 }
 
 input[type="text"] {
   padding: 5px;
+  width: 100%;
+  margin-bottom: 2px;
+}
+
+label.bookmark-label{
+  margin: 3px;
+}
+
+select {
+  width: 115px;
+  height: 30px;
+  margin: 5px;
+  background: #4E9CAF;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  line-height: 25px;
+  border-color: grey;
+}
+
+fieldset{
+  justify-content: center;
+  width: 100%;
+}
+
+textarea{
+  width: 100%;
 }
 
 button:hover {
@@ -24,7 +53,6 @@ button:hover {
 }
 .list-control {
   display: flex;
-  /* flex-direction: ; */
   justify-content: space-between;
 }
 
@@ -33,37 +61,31 @@ button:hover {
 }
 
 .bookmark {
-  
   width: 100%;
 }
 
-/* .bookmark-title{
-  align-self: left;
-} */
-
-/* .bookmark-rating {
-  align-self: flex-end;
-}  */
+.container-form{
+  background-color: white;
+}
 
 .bookmark-list {
-  /* flex-direction: column; */
+  font-family: 'Times New Roman', Times, serif;
   list-style: none;
   padding-left: 0;
-  width: 250px
+  width: 250px;
+  margin: 0 auto;
+  background-color: white;
 }
 
 .bookmark-list li {
-  /* margin-bottom: 20px; */
   border: 1px solid grey;
   padding: 15px;
 }
 
 .container, .container-form {
-  max-width: 251px;
+  width: 251px;
   margin: 0 auto;
   border: 1px solid grey;
-  display: flex;
-  flex-direction: column;
 }
 button.new-bookmark-button{
   margin: 5px;
@@ -143,6 +165,11 @@ button, .button {
 .star-cb-group:hover>input+label:hover~label:before,
 .star-cb-group:hover>input+label:hover:before {
   content: "★";
+  color: #e52;
+  text-shadow: 0 0 1px #333;
+}
+
+.icon {
   color: #e52;
   text-shadow: 0 0 1px #333;
 }
