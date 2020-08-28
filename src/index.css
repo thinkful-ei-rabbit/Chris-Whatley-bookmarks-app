@@ -86,6 +86,21 @@ button:hover {
   margin: 0 auto;
   border: 1px solid grey;
 }
+
+.error-container {
+  color: red;
+  font-weight: bold;
+  text-align: center; 
+}
+
+.error-container * {
+  display: inline-block;
+}
+
+#cancel-error {
+  margin-right: 0.5rem;
+}
+
 button.new-bookmark-button{
   margin: 5px;
 }
@@ -107,8 +122,8 @@ button, .button {
   /* remove inline-block whitespace */
   font-size: 0;
   /* flip the order so we can use the + and ~ combinators */
-  /* unicode-bidi: bidi-override; */
-  /* direction: rtl; */
+  unicode-bidi: bidi-override;
+  direction: rtl;
   /* the hidden clearer */
 }
 

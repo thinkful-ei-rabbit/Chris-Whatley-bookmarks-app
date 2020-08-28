@@ -9,7 +9,7 @@ const generateLayout= ()=> {
       <h1>My Bookmarks</h1>
         <div class="button-align">
           <button class="new-bookmark-button">New Bookmark</button>
-          <label>
+          <label for='filter'>
           <select name="FilterBy" id='filter'>
             <option value="0">Filter by Rating</option>
             <option value="5">5-star</option>
@@ -22,6 +22,7 @@ const generateLayout= ()=> {
         </div>
       </header>
     </section>
+
     <section class= 'error-container'></section>
     <section class="container-form">  
     </section>
@@ -41,8 +42,10 @@ function generateBookmarkElement(bookmark) {
             <div class="bookmark-title">${bookmark.title}</div><div class="bookmark-rating"> ${rating}</div>
         </div>
             <div class="expanded">
-                <div>Description:</div>
+                <fieldset>
+                <legend>Description:</legend>
                 <p class="bookmark-description">${bookmark.desc}</p>
+                </fieldset>
                 <div class="button-align">
                     <a href="${bookmark.url}" target="_blank" class='button'>Visit Site</a><button class="delete">Delete</button>
                 </div>
@@ -63,23 +66,26 @@ function generateNewBookmarkForm(){
     return `
         <form id="bookmark-form">
            <fieldset>
-           <label class='bookmark-label'for="bookmark-url">New Bookmark URL
-           <input type="text" class="new-bookmark" id='bookmark-url' placeholder="e.g.,- http://www.google.com" required></label><br>
-           <label class='bookmark-label'for="bookmark-name">New Bookmark Name </label><br>
+           <legend>Add New Bookmark</legend>
+           <label class='bookmark-label'for="bookmark-name">Bookmark Name </label><br>
            <input type="text" class="new-bookmark" id= 'bookmark-name'placeholder="e.g.- ESPN, Google, or Facebook" required> 
-            <fieldset class="star-cb-group">
-            <legend>Rating</legend>
-              <input type="radio" id="rating-1" name="rating" value="1" required/>
-              <label for="rating-1">1</label>
-              <input type="radio" id="rating-2" name="rating" value="2" />
-              <label for="rating-2">2</label>
-              <input type="radio" id="rating-3" name="rating" value="3" />
-              <label for="rating-3">3</label>
-              <input type="radio" id="rating-4" name="rating" value="4" />
-              <label for="rating-4">4</label>
-              <input type="radio" id="rating-5" name="rating" value="5" />
-              <label for="rating-5">5</label>
-            </fieldset><br>
+           <label class='bookmark-label'for="bookmark-url">Bookmark URL
+           <input type="text" class="new-bookmark" id='bookmark-url' placeholder="e.g.,- http://www.google.com" required></label><br>
+           <label class='bookmark-label'for="bookmark-rating" >Bookmark Rating</label><br>
+           <span class="star-cb-group" id='bookmark-rating'>
+                <input type="radio" id="rating-5" name="rating" value="5" />
+                <label for="rating-5">5</label>
+                <input type="radio" id="rating-4" name="rating" value="4" />
+                <label for="rating-4">4</label>
+                <input type="radio" id="rating-3" name="rating" value="3" />
+                <label for="rating-3">3</label>
+                <input type="radio" id="rating-2" name="rating" value="2" />
+                <label for="rating-2">2</label>
+                <input type="radio" id="rating-1" name="rating" value="1" />
+                <label for="rating-1">1</label>
+                <input type="radio" id="rating-0" name="rating" value="0" class="star-cb-clear" required/>
+                <label for="rating-0">0</label>
+            </span><br>
           <label class='bookmark-label' for='bookmark-description'>Description
             <textarea name="new-bookmark-entry" id="bookmark-description" placeholder="Enter description of bookmark(optional)" cols="30" rows="10"></textarea>
           </label><br>
@@ -124,9 +130,9 @@ function renderError() {
 };
 
 function render() {
+    $('main').html(generateLayout)
     renderError();
     console.log('Store at render:',store)
-    $('main').html(generateLayout)
     $('.container-form,.bookmark-list').empty();
     if (store.adding){
         let form= generateNewBookmarkForm()
