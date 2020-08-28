@@ -8,6 +8,7 @@ import store from './store'
 import bookmarkList from './bookmarks'
 
 function main(){
+    //render header here
     console.log('program compiled')
     api.getBookmarks()
         .then((bookmarks) => {
@@ -17,7 +18,6 @@ function main(){
         console.log('Store at load', store)
         });
     bookmarkList.bindEventListeners();
-    // bookmarkList.render();
 }
 
 $(main)

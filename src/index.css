@@ -33,14 +33,13 @@ select {
   margin: 5px;
   background: #4E9CAF;
   border-radius: 5px;
-  color: white;
+  color: black;
   font-weight: bold;
   line-height: 25px;
   border-color: grey;
 }
 
 fieldset{
-  justify-content: center;
   width: 100%;
 }
 
@@ -59,10 +58,6 @@ button:hover {
 .list-control {
   display: flex;
   justify-content: space-between;
-}
-
-.hidden {
-  display: none;
 }
 
 .bookmark {
@@ -102,7 +97,7 @@ button, .button {
   background: #4E9CAF;
   text-align: center;
   border-radius: 5px;
-  color: white;
+  color: black;
   font-weight: bold;
   line-height: 25px;
   margin-left: 2px;
@@ -112,8 +107,8 @@ button, .button {
   /* remove inline-block whitespace */
   font-size: 0;
   /* flip the order so we can use the + and ~ combinators */
-  unicode-bidi: bidi-override;
-  direction: rtl;
+  /* unicode-bidi: bidi-override; */
+  /* direction: rtl; */
   /* the hidden clearer */
 }
 
@@ -122,7 +117,8 @@ button, .button {
 }
 
 .star-cb-group>input {
-  display: none;
+  position: absolute;
+  opacity: 0;
 }
 
 .star-cb-group>input+label {
@@ -139,14 +135,14 @@ button, .button {
   display: inline-block;
   text-indent: -9999px;
   content: "☆";
-  color: #888;
+  color: black;
 }
 
 .star-cb-group>input:checked~label:before,
 .star-cb-group>input+label:hover~label:before,
 .star-cb-group>input+label:hover:before {
   content: "★";
-  color: #e52;
+  color: rgb(155, 39, 0);
   text-shadow: 0 0 1px #333;
 }
 
@@ -169,12 +165,12 @@ button, .button {
 .star-cb-group:hover>input+label:hover~label:before,
 .star-cb-group:hover>input+label:hover:before {
   content: "★";
-  color: #e52;
+  color: rgb(155, 39, 0);
   text-shadow: 0 0 1px #333;
 }
 
 .icon {
-  color: #e52;
+  color: rgb(155, 39, 0);
   text-shadow: 0 0 1px #333;
 }
 

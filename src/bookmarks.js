@@ -2,6 +2,36 @@ import $ from 'jquery';
 import store from './store';
 import api from './api';
 
+const generateLayout= ()=> {
+    return `
+    <section class="container">
+      <header>
+      <h1>My Bookmarks</h1>
+        <div class="button-align">
+          <button class="new-bookmark-button">New Bookmark</button>
+          <label>
+          <select name="FilterBy" id='filter'>
+            <option value="0">Filter by Rating</option>
+            <option value="5">5-star</option>
+            <option value="4">4-star</option>
+            <option value="3">3-star</option>
+            <option value="2">2-star</option>
+            <option value="1">1-star</option>
+          </select>
+          </label>
+        </div>
+      </header>
+    </section>
+    <section class= 'error-container'></section>
+    <section class="container-form">  
+    </section>
+    <section class="container">
+        <ul class="bookmark-list">
+        </ul>
+    </section>
+    `
+}
+
 function generateBookmarkElement(bookmark) {
     let rating = generateStarRating(bookmark.rating)
     if(bookmark.expanded ===true){
@@ -32,25 +62,28 @@ function generateBookmarkElement(bookmark) {
 function generateNewBookmarkForm(){
     return `
         <form id="bookmark-form">
-           <div class="error-container"></div>
-           <label class='bookmark-label'for="new-bookmark-entry">Add New Bookmark</label><br>
-           <input type="text" class="new-bookmark" id= 'bookmark-url'placeholder="Enter bookmark URL" required><br>
-           <input type="text" class="new-bookmark" id= 'bookmark-name'placeholder="Enter bookmark Name" required> 
            <fieldset>
-            <span class="star-cb-group">
-              <input type="radio" id="rating-5" name="rating" value="5" />
-              <label for="rating-5">5</label>
-              <input type="radio" id="rating-4" name="rating" value="4" />
-              <label for="rating-4">4</label>
-              <input type="radio" id="rating-3" name="rating" value="3" />
-              <label for="rating-3">3</label>
-              <input type="radio" id="rating-2" name="rating" value="2" />
-              <label for="rating-2">2</label>
+           <label class='bookmark-label'for="bookmark-url">New Bookmark URL
+           <input type="text" class="new-bookmark" id='bookmark-url' placeholder="e.g.,- http://www.google.com" required></label><br>
+           <label class='bookmark-label'for="bookmark-name">New Bookmark Name </label><br>
+           <input type="text" class="new-bookmark" id= 'bookmark-name'placeholder="e.g.- ESPN, Google, or Facebook" required> 
+            <fieldset class="star-cb-group">
+            <legend>Rating</legend>
               <input type="radio" id="rating-1" name="rating" value="1" required/>
               <label for="rating-1">1</label>
-            </span>
+              <input type="radio" id="rating-2" name="rating" value="2" />
+              <label for="rating-2">2</label>
+              <input type="radio" id="rating-3" name="rating" value="3" />
+              <label for="rating-3">3</label>
+              <input type="radio" id="rating-4" name="rating" value="4" />
+              <label for="rating-4">4</label>
+              <input type="radio" id="rating-5" name="rating" value="5" />
+              <label for="rating-5">5</label>
+            </fieldset><br>
+          <label class='bookmark-label' for='bookmark-description'>Description
+            <textarea name="new-bookmark-entry" id="bookmark-description" placeholder="Enter description of bookmark(optional)" cols="30" rows="10"></textarea>
+          </label><br>
           </fieldset>
-          <textarea name="new-bookmark-entry" id="bookmark-description" placeholder="Enter description of bookmark(optional)" cols="30" rows="10"></textarea><br>
           <div class="button-align">
             <button class="new-bookmark-cancel" type="reset">Cancel</button><button type="submit">Add Bookmark</button>
           </div>
@@ -93,9 +126,9 @@ function renderError() {
 function render() {
     renderError();
     console.log('Store at render:',store)
-    
+    $('main').html(generateLayout)
+    $('.container-form,.bookmark-list').empty();
     if (store.adding){
-        $('.container-form,.bookmark-list').empty();
         let form= generateNewBookmarkForm()
         $('.container-form').html(form)
     }
@@ -104,10 +137,8 @@ function render() {
         if (store.filter>0){
             bookmarksList = bookmarksList.filter(bookmark => bookmark.rating >= store.filter)
         }
-        $('.container-form,.bookmark-list').empty();
         // render the bookmark list in the DOM
         const bookmarksString = generateBookmarksString(bookmarksList);
-
         // insert that HTML into the DOM
         $('.bookmark-list').html(bookmarksString);
     }
@@ -115,7 +146,7 @@ function render() {
 };
 
 function handleNewBookmarkClick() {
-    $('.new-bookmark-button').click(() => {
+    $('main').on('click','.new-bookmark-button', () => {
         console.log('false?',store.adding)
         if (store.adding === false) {
             store.toggleNewBookmarkForm();
@@ -126,7 +157,7 @@ function handleNewBookmarkClick() {
 }
 
 function handleCancelNewBookmarkClick() {
-    $('.container-form').on('click','.new-bookmark-cancel',() =>{
+    $('main').on('click','.new-bookmark-cancel',() =>{
         console.log('cancel clicked')
         store.toggleNewBookmarkForm();
         console.log('false?',store.adding)
@@ -135,9 +166,8 @@ function handleCancelNewBookmarkClick() {
 }
 
 function handleNewBookmarkSubmit() {
-    $('.container-form').on('submit','#bookmark-form',(e)=> {
+    $('main').on('submit','#bookmark-form',(e)=> {
         e.preventDefault();
-        console.log('form submitted')
         const newBookmark = {
             title: $('#bookmark-name').val(),
             url: $('#bookmark-url').val(),
@@ -165,7 +195,7 @@ function handleNewBookmarkSubmit() {
 };
 
 function handleCloseError() {
-    $('.error-container').on('click', '#cancel-error', () => {
+    $('main').on('click', '#cancel-error', () => {
       store.setError(null);
       render();
     });
@@ -176,8 +206,7 @@ function getBookmarkIdFromElement(bookmark) {
 };
 
 function handleBookmarkListItemClicked(){
-    $('.bookmark-list').on('click', '.list-control', e =>{
-        //e.preventDefault()
+    $('main').on('click', '.list-control', e =>{
         let id = getBookmarkIdFromElement(e.currentTarget)
         let bookmark = store.findById(id)
         console.log('bookmark id:', id)
@@ -190,7 +219,7 @@ function handleBookmarkListItemClicked(){
 }
 
 function handleDeleteBookmarkClicked(){
-    $('.bookmark-list').on('click', '.delete', e => {
+    $('main').on('click', '.delete', e => {
         const id = getBookmarkIdFromElement(e.currentTarget);
     
         api.deleteBookmark(id)
@@ -207,7 +236,7 @@ function handleDeleteBookmarkClicked(){
 }
 
 function handleRatingFilterSelection(){
-    $('#filter').on('change', ()=>{
+    $('main').on('change', '#filter',()=>{
         console.log('filter selected')
         console.log(parseInt($('option:selected').val()))
         store.filter = parseInt($('option:selected').val())
@@ -224,7 +253,6 @@ function bindEventListeners() {
     handleBookmarkListItemClicked();
     handleDeleteBookmarkClicked();
     handleRatingFilterSelection();
-    // handleEditBookmarkSubmit();
 }
 
 export default {
