@@ -1,5 +1,5 @@
 let bookmarks = [];
-let error = null;
+let error = null; 
 let adding = false;
 let filter= 0;
 
